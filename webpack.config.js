@@ -1,17 +1,26 @@
-const path = require('path');
+var path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, 'public'),
-        filename: 'main.js'
+        filename: '[hash].main.js'
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: 'public/index.html'
+        }),
+        new MiniCssExtractPlugin({filename: '[hash].style.css'})
+    ],
     devServer: {
         contentBase: path.join(__dirname, 'public'),
         compress: true,
         port: 3000,
         watchContentBase: true,
-        progress: true
+        progress: true,
+        open: true
     },
     module: {
         rules: [
@@ -24,15 +33,7 @@ module.exports = {
             },
             {
                 test: /\.css$/,
-                use: [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            modules: true
-                        }
-                    }
-                ]
+                use:  ['style-loader', MiniCssExtractPlugin.loader, 'css-loader']
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
