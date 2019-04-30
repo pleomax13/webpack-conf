@@ -1,0 +1,19 @@
+{
+  "name": "webpack-conf",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pleomax13/webpack-conf.git"
+  },
+  "author": "pleomax",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pleomax13/webpack-conf/issues"
+  },
+  "homepage": "https://github.com/pleomax13/webpack-conf#readme"
+}
