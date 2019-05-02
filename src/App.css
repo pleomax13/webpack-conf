@@ -1,0 +1,8 @@
+.App {
+    font-size: 25px;
+    background-image: url(./logo.svg);
+}
+
+.App > img {
+    width: 200px;
+}
