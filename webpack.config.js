@@ -67,7 +67,7 @@ module.exports = (env, argv) => {
         devServer: {
             contentBase: path.join(__dirname, 'public'),
             compress: true,
-            port: 3000,
+            port: 3030,
             watchContentBase: true,
             progress: true,
             open: true
