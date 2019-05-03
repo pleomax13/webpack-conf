@@ -21,11 +21,12 @@ module.exports = (env, argv) => {
                 isProd ? 'js/[name].[chunkhash:8].chunk.js' : 'js/[name].chunk.js',
             filename: 
                 isProd ? 'js/[name].[chunkhash:8].js' : 'js/main.js',
-            devtoolModuleFilenameTemplate: isProd ? 
-                undefined : 
+            devtoolModuleFilenameTemplate:  
+                isProd ?
+                info => path.relative('src', info.absoluteResourcePath).replace(/\\/g, '/') :
                 info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
         },
-        devtool: 'source-map',
+        devtool: isProd ? 'source-map' : 'cheap-module-source-map',
         plugins: [
             isProd ? new CleanWebpackPlugin() : new CleanWebpackPlugin({dry: true}), 
             new HtmlWebpackPlugin({
