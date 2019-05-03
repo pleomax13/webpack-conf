@@ -9,9 +9,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const PostcssSafeParser = require('postcss-safe-parser');
-const fs = require('fs');
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
     const isProd = argv.mode === 'production';
@@ -26,7 +24,7 @@ module.exports = (env, argv) => {
                 isProd ? 'js/[name].[chunkhash:8].js' : 'js/main.js',
             devtoolModuleFilenameTemplate:  
                 isProd ?
-                info => path.relative(resolveApp('src'), info.absoluteResourcePath).replace(/\\/g, '/') :
+                info => path.relative('src', info.absoluteResourcePath).replace(/\\/g, '/') :
                 info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
         },
         devtool: isProd ? 'source-map' : 'cheap-module-source-map',
@@ -35,6 +33,7 @@ module.exports = (env, argv) => {
             new HtmlWebpackPlugin({
                 template: 'public/index.html',
                 filename: 'index.html',
+                inject: true,
                 minify: isProd ?
                 {
                     removeComments: true,
@@ -66,7 +65,13 @@ module.exports = (env, argv) => {
                     new RegExp('^/_'),
                     new RegExp('/[^/]+\\.[^/]+$'),
                 ],
-            })
+            }),
+            new CopyPlugin([
+                {
+                  from: 'public',
+                  ignore: ['*.html']
+                },
+              ]),
         ],
         devServer: {
             contentBase: path.join(__dirname, 'public'),
