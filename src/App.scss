@@ -1,5 +1,7 @@
+$font-size: 25px;
+
 .App {
-    font-size: 25px;
+    font-size: $font-size;
     background-image: url(./logo.svg);
 }
 

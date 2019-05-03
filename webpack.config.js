@@ -82,6 +82,7 @@ module.exports = (env, argv) => {
                     comments: false
                     },
                 },
+                cache: true
             }),
             new OptimizeCSSAssetsPlugin({
                 cssProcessorOptions: {
@@ -120,7 +121,7 @@ module.exports = (env, argv) => {
                         {
                             loader: 'css-loader',
                             options: {
-                                sourceMap: true
+                                sourceMap: isProd
                             }
                         },
                         {
@@ -129,23 +130,24 @@ module.exports = (env, argv) => {
                             ident: 'postcss',
                             plugins: [
                                 require('postcss-preset-env')(),
-                                /*require('cssnano')({
-                                    preset: ['default', {
-                                        normalizeWhitespace: argv.mode === 'production' ? true : false
-                                    }]
-                                }),*/
-                            ]
+                            ],
+                            sourceMap: isProd
                             }
                         },
-                        'sass-loader',
+                        {
+                            loader: 'sass-loader',
+                            options: {
+                                sourceMap: isProd
+                            }
+                        },
                     ]
                 },
                 {
-                    test: /\.(png|svg|jpg|gif)$/,
+                    exclude: [/\.(js|mjs|jsx|ts|tsx|css|scss|sass)$/, /\.html$/, /\.json$/],
                     use: {
                         loader: 'file-loader',
                         options: {
-                            outputPath: 'media'
+                            name: 'media/[name].[hash:8].[ext]'
                         }
                     }
                 },
