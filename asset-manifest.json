@@ -7,7 +7,9 @@
   "vendors~main.js": "js/vendors~main.ca995665.chunk.js",
   "vendors~main.js.map": "js/vendors~main.ca995665.chunk.js.map",
   "css/main.e53804c8.css.map": "css/main.e53804c8.css.map",
+  "favicon.ico": "favicon.ico",
   "index.html": "index.html",
+  "manifest.json": "manifest.json",
   "media/Home.css": "media/logo.5d5d9eef.svg",
   "precache-manifest.ea1bf746350c87349b64022e96e7ab90.js": "precache-manifest.ea1bf746350c87349b64022e96e7ab90.js",
   "service-worker.js": "service-worker.js"
