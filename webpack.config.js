@@ -9,6 +9,9 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const PostcssSafeParser = require('postcss-safe-parser');
+const fs = require('fs');
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
 
 module.exports = (env, argv) => {
     const isProd = argv.mode === 'production';
@@ -23,7 +26,7 @@ module.exports = (env, argv) => {
                 isProd ? 'js/[name].[chunkhash:8].js' : 'js/main.js',
             devtoolModuleFilenameTemplate:  
                 isProd ?
-                info => path.relative('src', info.absoluteResourcePath).replace(/\\/g, '/') :
+                info => path.relative(resolveApp('src'), info.absoluteResourcePath).replace(/\\/g, '/') :
                 info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/')
         },
         devtool: isProd ? 'source-map' : 'cheap-module-source-map',
@@ -111,7 +114,12 @@ module.exports = (env, argv) => {
                 {
                     test: /\.(css|scss)$/,
                     use:  [
-                        'style-loader', 
+                        {
+                            loader: 'style-loader',
+                            options: {
+                                sourceMap: isProd
+                            }
+                        }, 
                         {
                             loader: MiniCssExtractPlugin.loader,
                             options: {
@@ -127,17 +135,19 @@ module.exports = (env, argv) => {
                         {
                             loader: 'postcss-loader',
                             options: {
-                            ident: 'postcss',
-                            plugins: [
-                                require('postcss-preset-env')(),
-                            ],
-                            sourceMap: isProd
+                                ident: 'postcss',
+                                plugins: [
+                                    require('postcss-preset-env')({
+                                        stage: 3
+                                    }),
+                                ],
+                                sourceMap: isProd
                             }
                         },
                         {
                             loader: 'sass-loader',
                             options: {
-                                sourceMap: isProd
+                                //sourceMap: isProd,
                             }
                         },
                     ]
